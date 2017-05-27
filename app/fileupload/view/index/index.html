@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>lill</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/fileupload/css/default.css" rel="stylesheet" type="text/css">
+    <link href="/static/fileupload/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+    <!--<script src="http://cdn.bootcss.com/jquery/1.11.0/jquery.min.js" type="text/javascript"></script>-->
+    <script src="/static/fileupload/js/jquery-2.0.3.min.js"></script>
+    <script src="/static/fileupload/js/fileinput.js" type="text/javascript"></script>
+    <!--简体中文-->
+    <script src="/static/fileupload/js/locales/zh.js" type="text/javascript"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <!--<script src="/static/fileupload/js/bootstrap.min.js" type="text/javascript"></script>-->
+</head>
+<body>
+<div class="htmleaf-container">
+    <div class="container kv-main">
+        <form enctype="multipart/form-data">
+            <input id="file-zh" name="file-zh[]" type="file" multiple>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+//    $('#file-zh').fileinput({
+//        language: 'zh',
+//        uploadUrl: '#',
+//        allowedFileExtensions : ['jpg', 'png','gif'],
+//    });
+    var id = 2;
+    fileinput("file-zh");
+    // 初始化fileinput空件（第一次初始化）
+    function fileinput(ctrlName) {
+        var control = $('#' + ctrlName);
+        control.fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: '#', //上传的地址
+            allowedFileExtensions : ['jpg', 'png','gif'],   //接受的文件的后缀
+            showUpload: true,   //是否实现上传按钮
+            showPreview: true,  //是否显示图片预览图
+            showRemove: true,    //是否显示删除/清空按钮。默认值true。
+            showCancel: true,   //是否显示取消文件上传按钮。只有在AJAX上传线程中该属性才可见可用。默认值true。
+            browseClass: "btn btn-primary", //按钮样式
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            maxFileCount: 4,    //表示同时上传文件的个数
+            dropZoneEnabled: true,  //是否显示拖拽区域
+
+            initialPreviewConfig: {
+                caption: ctrlName,
+                width: '120px',
+                url: "{:url('index/file_upload')}",
+                key: 101,
+                success: function () {
+
+                }
+            }
+        });
+    }
+
+    // 监听事件
+    $("#file-zh").on("fileupload",function (event,data,previewId,index) {
+        alert(data.response);
+    });
+</script>
+</html>
