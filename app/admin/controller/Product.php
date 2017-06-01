@@ -1,7 +1,6 @@
 <?php
 namespace app\admin\controller;
 use think\Controller;
-use org\Upload;
 
 class product extends Controller
 {
@@ -38,7 +37,7 @@ class product extends Controller
         $data['status'] = $_POST['status'];
         $data['reorder'] = $_POST['reorder'];
         $data['text'] = $_POST['text'];
-        $data['imagepath']=implode(',', $_POST['imagepath']);
+        $data['imgpath'] = '';
         $goods = db('goods');
         $result = $goods -> insert($data);
         if ($result){
@@ -48,7 +47,6 @@ class product extends Controller
         }
 
     }
-
     public function product_brand()
     {
         return $this->fetch();
@@ -72,8 +70,9 @@ class product extends Controller
     //显示需要修改商品信息
     public function product_edit_goods()
     {
+        $id = input('id');
         if(empty($_POST)){
-            $goods = db('goods') -> find(input('id'));
+            $goods = db('goods') -> find($id);
             $this -> assign('goods',$goods);
             $data = db('goods_type')
                 -> field("*,concat(path,'-',id) as paths")
@@ -82,14 +81,6 @@ class product extends Controller
             foreach ($data as $k => $v) {
                 $data[$k]['name'] = str_repeat("|------",$v['level']).$v['name'];
             }
-            $images=explode(',',$goods['imagepath']);
-            $goods_files = db('goods_files');
-            $image=[];
-            foreach($images as $v){
-                array_push($image,$goods_files -> find($v));
-            }
-
-            $this->assign("image",$image);
             $this -> assign('data',$data);
         }else{
             $data['goodsname'] = $_POST['goodsname'];
@@ -99,7 +90,6 @@ class product extends Controller
             $data['unit'] = $_POST['unit'];
             $data['attributes'] = $_POST['attributes'];
             $data['number'] = $_POST['number'];
-            $data['barcode'] = $_POST['barcode'];
             $data['curprice'] = $_POST['curprice'];
             $data['oriprece'] = $_POST['oriprece'];
             $data['cosprice'] = $_POST['cosprice'];
@@ -110,8 +100,9 @@ class product extends Controller
             $data['status'] = $_POST['status'];
             $data['reorder'] = $_POST['reorder'];
             $data['text'] = $_POST['text'];
+            $data['imgpath'] = '';
             $goods = db('goods');
-            $result = $goods -> where("id=".$_POST['id']) -> update($data);
+            $result = $goods -> where("id=".$id) -> update($data);
             if ($result){
                 $this -> success('修改成功','product_list','','2');
             }else{
@@ -177,7 +168,7 @@ class product extends Controller
     //添加分类到数据库
     public function goods_type_add()
     {
-        $data['name'] = $_POST['name'];     //没有问题
+        $data['name'] = $_POST['name'];
         if($data['name']=="" || $data['name'] ==null){
             return '<script>alert("添加失败，内容不能为空！");location.href = "product_category_add";</script>';
         }
@@ -214,51 +205,6 @@ class product extends Controller
             }else{
                 return '<script>alert("error");location.href = "product_category_add";</script>';
             }
-        }
-
-    }
-
-    //  上传图片
-    public function product_add_images()
-    {
-
-        $upload = new  \org\Upload();// 实例化上传类
-        $upload->maxSize   =     3145728 ;// 设置附件上传大小
-        $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
-        $upload->rootPath  =      './static/files/'; // 设置附件上传目录    // 上传文件
-        $upload->saveName=time().rand(1111,9999);
-        $date=date("Y-m-d",time());//已上传日期为子目录名
-        $upload->saveExt="png";//上传的文件后缀
-        $info   =   $upload->upload();
-        if(!$info) {// 上传错误提示错误信息
-
-            $this->error($upload->getError());
-
-        }else{
-            // 上传成功
-            $goods_files=db('goods_files');
-            $data['filepath']='/static/files/'.$date."/".$upload->saveName.".".$upload->saveExt;
-            $goods_files -> insert($data);
-            $id = $goods_files -> getLastInsID();
-            $file=['id'=>$id,'imagepath'=>$data['filepath']];
-            echo json_encode($file);
-        }
-
-    }
-
-    //删除图片
-    public function product_del_images()
-    {
-        $goods = db('goods');
-        $arr = explode(',',$_GET['arr']);
-        $impath = $goods ->field('imagepath') -> find($arr[0]);
-        $data = str_replace("$arr[1]",null,$impath);
-        $result = $goods -> where("id=".$arr[0]) -> update($data);
-        if($result){
-            db('goods_files') -> delete($arr[1]);
-            return 1;
-        }else{
-            return 2;
         }
 
     }
