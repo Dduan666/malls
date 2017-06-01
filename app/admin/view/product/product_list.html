@@ -40,7 +40,7 @@
 				<tbody>
 				{foreach $data as $vo}
 				<tr class="text-c va-m">
-					<td><input name="" type="checkbox" value=""></td>
+					<td><input name="" type="checkbox" value="{$vo.id}"></td>
 					<td>{$vo.id}</td>
 					<td></td>
 					<td>{$vo.goodsname}</td>
@@ -96,7 +96,7 @@
 	<script type="text/javascript" src="/static/admin/lib/respond.min.js"></script>
 	<![endif]-->
 	<script type="text/javascript" src="/static/admin/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-	<script>DD_belatedPNG.fix('*');</script>
+	<!--<script>DD_belatedPNG.fix('*');</script>-->
 	<script type="text/javascript" src="/static/admin/lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script>
 	<script type="text/javascript" src="/static/admin/lib/My97DatePicker/4.8/WdatePicker.js"></script>
 	<script type="text/javascript" src="/static/admin/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
@@ -235,7 +235,7 @@
 
 	/*产品-删除*/
     function product_del_goods(obj,id){
-        layer.confirm('确认要删除吗？',function(index){
+        layer.confirm('确认要删除吗？',function(){
             $.ajax({
                 type: 'POST',
                 url: "{:url('product_del_goods')}",
