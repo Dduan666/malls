@@ -127,3 +127,5 @@ All rights reserved。
 ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
 
 更多细节参阅 [LICENSE.txt](LICENSE.txt)
+
+D:\WWW\malls\app\admin\view\product  下面的商品删除有问题，还需要解决
