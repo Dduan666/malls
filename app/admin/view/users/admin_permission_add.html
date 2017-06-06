@@ -1,0 +1,82 @@
+﻿{extend name="Layout:layout" /}
+{block name="meta"}{include file="Public:meta" /}{/block}
+{block name="title"}<title>新建网站角色</title>{/block}
+{block name="style"}{include file="Public:style" /}{/block}
+{block name="body"}
+<article class="page-container">
+	<form method="post" class="form form-horizontal" id="form-admin-role-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>节点名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="title" name="title" datatype="*4-16" nullmsg="节点名称不能为空">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>节点URL地址：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="name" name="name" datatype="*4-16" nullmsg="节点URL地址不能为空">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<button type="submit" class="btn btn-success radius" id="admin-role-save">确定</button><i class="icon-ok"></i>
+			</div>
+		</div>
+	</form>
+</article>
+{/block}
+{block name="script"}{include file="Public:script" /}{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function(){
+        $(".permission-list dt input:checkbox").click(function(){
+            $(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
+        });
+        $(".permission-list2 dd input:checkbox").click(function(){
+            var l =$(this).parent().parent().find("input:checked").length;
+            var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
+            if($(this).prop("checked")){
+                $(this).closest("dl").find("dt input:checkbox").prop("checked",true);
+                $(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
+            }
+            else{
+                if(l==0){
+                    $(this).closest("dl").find("dt input:checkbox").prop("checked",false);
+                }
+                if(l2==0){
+                    $(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
+                }
+            }
+        });
+
+        $("#form-admin-role-add").validate({
+            rules:{
+                name:{
+                    required:true,
+                },
+                title:{
+                    required:true,
+                }
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                $(form).ajaxSubmit({
+                    type: 'post',
+                    url: "{:url('users/admin_permission_add')}" ,
+                    success: function(data){
+                    layer.msg('添加成功!',{icon:1,time:1000});
+					},
+					error: function(XmlHttpRequest, textStatus, errorThrown){
+						layer.msg('error!',{icon:1,time:1000});
+					}
+           	 	});
+                var index = parent.layer.getFrameIndex(window.name);
+
+                parent.layer.close(index);
+            }
+        });
+    });
+</script>
+{/block}
