@@ -36,6 +36,8 @@ class Users extends Controller
     //权限列表页面
     public function admin_permission()
     {
+        $data = db('auth_rule') -> select();
+        $this -> assign('data',$data);
         return $this -> fetch();
     }
     //添加权限页面
@@ -57,6 +59,12 @@ class Users extends Controller
         }
 
     }
+
+    //修改权限页面
+    public function admin_permission_edit()
+    {
+        return $this -> fetch();
+    }
     //角色列表页面
     public function admin_role()
     {
@@ -65,6 +73,14 @@ class Users extends Controller
     //添加角色页面
     public function admin_role_add()
     {
-        return $this -> fetch();
+            $data = db('auth_rule') -> field('id,name,title') -> select();
+            $this -> assign('data',$data);
+            return $this -> fetch();
+
+    }
+
+    public function admin_role_add_user()
+    {
+        var_dump($_POST);
     }
 }

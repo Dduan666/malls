@@ -30,16 +30,18 @@
 		</tr>
 		</thead>
 		<tbody>
-		<tr class="text-c">
-			<td><input type="checkbox" value="1" name=""></td>
-			<td>1</td>
-			<td>栏目添加</td>
-			<td></td>
-			<td>
-				<a title="编辑" href="javascript:;"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
-				<a title="删除" href="javascript:;"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
-			</td>
-		</tr>
+		{foreach $data as $vo}
+			<tr class="text-c">
+				<td><input type="checkbox" value="1" name=""></td>
+				<td>{$vo.id}</td>
+				<td>{$vo.title}</td>
+				<td>{$vo.name}</td>
+				<td>
+					<a title="编辑" href="javascript:;" onclick="admin_permission_edit('修改权限节点','admin_permission_edit.html','{$vo.id}','','310')"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+					<a title="删除" href="javascript:;"  class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+				</td>
+			</tr>
+		{/foreach}
 		</tbody>
 	</table>
 </div>
@@ -73,6 +75,7 @@
 	/*管理员-权限-编辑*/
     function admin_permission_edit(title,url,id,w,h){
         layer_show(title,url,w,h);
+
     }
 
 	/*管理员-权限-删除*/
