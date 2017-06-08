@@ -7,6 +7,12 @@ class Users extends Controller
     //管理员列表页面
     public function admin_list()
     {
+        $data = db('admin_user')
+            -> alias('a')
+            -> join('ma_auth_group b','a.admin_rule = b.id')
+            -> select();
+        dump($data);
+        $this -> assign('data',$data);
         return $this -> fetch();
     }
     //添加管理员页面
@@ -68,6 +74,8 @@ class Users extends Controller
     //角色列表页面
     public function admin_role()
     {
+        $data = db('auth_group') -> select();
+        $this -> assign('data',$data);
         return $this -> fetch();
     }
     //添加角色页面
@@ -78,9 +86,30 @@ class Users extends Controller
             return $this -> fetch();
 
     }
-
+    //添加角色到数据库
     public function admin_role_add_user()
     {
-        var_dump($_POST);
+        $data['title'] = $_POST['roleName'];
+        if(!empty($_POST['id'])){
+            $data['rules'] = implode(",", $_POST['check']);
+        }
+        $data['status'] = 1;
+        $data['text'] = $_POST['roleText'];
+        $resule = db('auth_group') -> insert($data);
+        if ($resule){
+            return $this -> success('成功','admin_role_add','3');
+        }else{
+            return $this -> error('失败');
+        }
+    }
+
+    public function admin_role_del()
+    {
+        $resule = db('auth_group') -> where("id=".$_POST['id']) ->delete();
+        if($resule){
+            return 1;
+        }else{
+            return 2;
+        }
     }
 }
