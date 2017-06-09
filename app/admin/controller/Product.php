@@ -3,7 +3,7 @@ namespace app\admin\controller;
 use think\Controller;
 use org\Upload;
 
-class product extends Controller
+class product extends Common
 {
     public function product_add()
     {

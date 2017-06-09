@@ -1,17 +1,19 @@
 <?php
 namespace app\admin\controller;
+use tests\thinkphp\library\think\dbTest;
 use \think\Controller;
 use \org\auth;
-class Users extends Controller
+class Users extends Common
 {
     //管理员列表页面
     public function admin_list()
     {
         $data = db('admin_user')
-            -> alias('a')
-            -> join('ma_auth_group b','a.admin_rule = b.id')
+//            -> alias('a')
+//            -> join('ma_auth_group b','a.admin_rule = b.id','left')
+//            -> field('a.*,b.title')
             -> select();
-        dump($data);
+//        return $this -> getLastsql();
         $this -> assign('data',$data);
         return $this -> fetch();
     }
@@ -19,22 +21,33 @@ class Users extends Controller
     public function admin_add()
     {
         if($_POST){
+            $admin_user = db('admin_user');
             $data['admin_name'] = $_POST['admin_name'];
             $data['admin_password'] = md5($_POST['admin_password']);
             $data['sex'] = $_POST['sex'];
             $data['phone'] = $_POST['phone'];
             $data['email'] = $_POST['email'];
-            $data['admin_rule'] = $_POST['admin_rule'];
+            $data['group_id'] = $_POST['group_id'];
             $data['admin_remark'] = $_POST['admin_remark'];
             $data['add_time'] = 1;
-            $result = db('admin_user') -> insert($data);
-            if($result){
-                return $this -> success('成功','users/admin_add','3');
+            $repname = $admin_user -> where("admin_name='".$data['admin_name']."'") -> find();
+
+            if (!$repname){
+                $res1 = $admin_user -> insert($data); //   将信息添加到管理员表中
+                $group['uid'] = $admin_user -> getLastInsID(); //  获取最后一次插入表中的id
+                $group['group_id'] = $_POST['group_id'];
+                $res2 = db('auth_group_access') -> insert($group);  //  分组数据库
+                if ($res1 && $res2){
+                    return $this -> success('成功','users/admin_add',3);
+                }else{
+                    return $this -> error('失败');
+                }
+
             }else{
-                return $this -> error('失败','users/admin_add','3');
+                return $this -> error('当前用户名已存在！');
             }
         }else{
-            $data = db('auth_rule') -> field('id,title') -> select();
+            $data = db('auth_group') -> field('id,title') -> select();
             $this -> assign('data',$data);
             return $this -> fetch();
         }

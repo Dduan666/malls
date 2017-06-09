@@ -12,6 +12,12 @@ class Common extends Controller
             return $this -> error('您还没有登录','login/login','3');
         }
 
-        $AUTH = new \org\Auth();
+             $AUTH = new \org\Auth();
+            // MODULE_NAME(index).'/'.CONTROLLER_NAME(index).'/'.ACTION_NAME(index)==index/index/index
+
+          if(!$AUTH->check(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME, session('user')['id'])){
+
+               return $this -> error('没有权限','login/login',3);
+          }
     }
 }
