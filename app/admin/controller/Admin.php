@@ -1,6 +1,6 @@
 <?php
 namespace app\admin\controller;
-use think\Controller;
+//use think\Controller;
 class Admin extends Common
 {
     public function user(){

@@ -1,5 +1,6 @@
 <?php
 namespace app\admin\controller;
+
 use think\Controller;
 use org\Upload;
 
@@ -38,7 +39,9 @@ class product extends Common
         $data['status'] = $_POST['status'];
         $data['reorder'] = $_POST['reorder'];
         $data['text'] = $_POST['text'];
-        $data['imagepath']=implode(',', $_POST['imagepath']);
+        if (!empty($_POST['imagepath'])){
+            $data['imagepath']=implode(',', $_POST['imagepath']);
+        }
         $goods = db('goods');
         $result = $goods -> insert($data);
         if ($result){

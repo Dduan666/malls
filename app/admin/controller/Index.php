@@ -1,6 +1,6 @@
 <?php
 namespace app\admin\controller;
-use \think\Controller;
+//use \think\Controller;
 class Index extends Common
 {
     public function index()

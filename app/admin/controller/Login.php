@@ -2,7 +2,7 @@
 namespace app\admin\controller;
 use tests\thinkphp\library\think\dbTest;
 use \think\Controller;
-class Login extends Common
+class Login extends Controller
 {
     //显示登录页面
     public function login()
