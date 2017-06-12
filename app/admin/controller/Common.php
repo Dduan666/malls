@@ -15,10 +15,10 @@ class Common extends Controller
         }
         $AUTH = new Auth();
         // MODULE_NAME(index).'/'.CONTROLLER_NAME(index).'/'.ACTION_NAME(index)==index/index/index   //模块名、控制器名、方法名
-
-        if(!$AUTH->check(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME, session('user')['id'])){
-
-            return $this -> error('没有权限','login/login',3);
-        }
+        dump($AUTH);
+//        if(!$AUTH->check(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME, session('user')['id'])){
+//
+//            return $this -> error('没有权限','login/login',3);
+//        }
     }
 }
