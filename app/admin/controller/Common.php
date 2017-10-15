@@ -6,7 +6,7 @@ class Common extends Controller
 {
 
     //当任何函数加载的时候 会调用此函数
-    public function _initialize()  //磨人的方法 会自动执行 特征像构造方法
+    public function _initialize()  //默认的方法 会自动执行 特征像构造方法
     {
 
         $uid = session('user')['id'];
@@ -15,7 +15,7 @@ class Common extends Controller
         }
         $AUTH = new Auth();
         // MODULE_NAME(index).'/'.CONTROLLER_NAME(index).'/'.ACTION_NAME(index)==index/index/index   //模块名、控制器名、方法名
-        dump($AUTH);
+//        dump($AUTH);
 //        if(!$AUTH->check(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME, session('user')['id'])){
 //
 //            return $this -> error('没有权限','login/login',3);

@@ -1,7 +1,7 @@
 <?php
 namespace app\admin\controller;
 use \think\Controller;
-class Picture extends Common
+class Picture extends Controller
 {
     public function picture_list()
 {

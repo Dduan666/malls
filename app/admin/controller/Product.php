@@ -4,7 +4,7 @@ namespace app\admin\controller;
 use think\Controller;
 use org\Upload;
 
-class product extends Common
+class product extends Controller
 {
     public function product_add()
     {
